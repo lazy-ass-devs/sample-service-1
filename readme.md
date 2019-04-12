@@ -28,7 +28,7 @@ Run the event listener
 ```
 php artisan event:listen
 ```
-![Event Listen](/images/1.png)
+![Event Listen](samples/1.png)
 
 After that... make sure to send the sample-service-2 project and see the changes
-![Event Listen2](images/2.png)
+![Event Listen2](samples/2.png)
