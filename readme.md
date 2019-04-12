@@ -32,3 +32,9 @@ php artisan event:listen
 
 After that... make sure to send the sample-service-2 project and see the changes
 ![Event Listen2](samples/2.png)
+
+## How to
+Create a artisan command and make it listen to incoming RabbitMQ queues
+https://laravel.com/docs/5.8/artisan#writing-commands
+
+Check the [**app/Console/Commands/EventListener.php**, **app/Console/Kernel.php**] files for the implementation.
