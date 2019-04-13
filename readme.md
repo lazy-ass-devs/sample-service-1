@@ -38,7 +38,8 @@ After that... make sure to send the [sample-service-2](https://github.com/lazy-a
     
     Check the [**app/Console/Commands/EventListener.php**, **app/Console/Kernel.php**] files for the implementation.
 
-- Create Projector and add it into ProjectorProvider
+- Create Projector and add it into ProjectorProvider.
+
   1.) First create projector class and put it in **app\Projectors\Projector**     directory
   ```php
     namespace App\Projectors\Projector;
