@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
+use App\Projectors\MainProjector;
+
 class EventListener extends Command {
     /**
      * The name and signature of the console command.
@@ -21,13 +23,20 @@ class EventListener extends Command {
     protected $description = 'Listen to event from ampq';
 
     /**
+     * @var MainProjector
+     */
+    private $projectors;
+
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(MainProjector $mainProjector)
     {
         parent::__construct();
+
+        $this->projectors = collect($mainProjector->getProjectors());
     }
 
     /**
@@ -37,6 +46,21 @@ class EventListener extends Command {
      */
     public function handle()
     {
+        $this->generateProjector();
+        $this->listenEventSubscriber();
+    }
+
+    private function generateProjector(){
+        $projectors = $this->projectors->map(function($projector){
+            return [$projector->name()];
+        });
+    
+        $this->table(['Available Projectors'], $projectors);
+    }
+
+    private function listenEventSubscriber(){
+        $this->line(" [*] Waiting for events. To exit press CTRL+C");
+
         $connection = new AMQPStreamConnection('localhost', '5672', 'guest', 'guest');
         $channel = $connection->channel();
 
@@ -46,13 +70,7 @@ class EventListener extends Command {
 
         $channel->queue_bind($queue_name, 'events');
 
-        echo " [*] Waiting for events. To exit press CTRL+C\n";
-
-        $callback = function ($msg){
-            echo ' [x] ', $msg->body, "\n";
-        };
-
-        $channel->basic_consume($queue_name, '', false, true, false, false, $callback);
+        $channel->basic_consume($queue_name, '', false, true, false, false, $this->callback());
 
         while(count($channel->callbacks)){
             $channel->wait();
@@ -60,5 +78,12 @@ class EventListener extends Command {
 
         $channel->close();
         $connection->close();
+    }
+
+    private function callback(){
+        return function ($message){
+            echo ' [x] ', $message->body, "\n";
+        };
+
     }
 }
