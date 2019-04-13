@@ -66,5 +66,5 @@ After that... make sure to send the [sample-service-2](https://github.com/lazy-a
     ];
     ```
     3.) Check, if its already binded. run **php artisan event:listen**
-    ![Event Listen3](samples/3.png)
+    ![Event Listen3](samples/3.JPG)
 
