@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 use App\Projectors\MainProjector;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class EventListener extends Command {
     /**
@@ -81,8 +82,18 @@ class EventListener extends Command {
     }
 
     private function callback(){
-        return function ($message){
-            echo ' [x] ', $message->body, "\n";
+        return function (AMQPMessage $message){
+            $messageBody = json_decode($message->body);
+            $this->warn(
+                " [ ] $messageBody->event_name was raised "
+            );
+
+            $this->projectors->each(function($projector) use ($messageBody) {
+                if($projector->project($messageBody)){
+                    $time = date('Y-m-d h:i:s', time());
+                    $this->info(" [√] {$time} Projected by {$projector->name()}. ");
+                }
+            });
         };
 
     }

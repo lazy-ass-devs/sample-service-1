@@ -12,7 +12,8 @@ class ProjectorProvider extends ServiceProvider {
      */
     private $projectors = [
         'App\Projectors\Projector\HelloProjector', 
-        'App\Projectors\Projector\WorldProjector'
+        'App\Projectors\Projector\WorldProjector',
+        'App\Projectors\Projector\SampleEventProjector'
     ];
 
     public function register(){

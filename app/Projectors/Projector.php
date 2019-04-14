@@ -17,5 +17,5 @@ interface Projector {
      * @param [type] $msg
      * @return boolean
      */
-    public function project(AMQPMessage $message): bool;
+    public function project($message): bool;
 }

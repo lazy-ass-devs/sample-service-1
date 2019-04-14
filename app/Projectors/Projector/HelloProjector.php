@@ -11,8 +11,10 @@ final class HelloProjector implements Projector {
         return 'HelloProjector';
     }
     
-    public function project(AMQPMessage $message): bool{
-        echo ' [x] ', $message->body, "\n";
-        return true;
+    public function project($message): bool{
+        if($message->event_name === 'HelloEvent'){
+            return true;
+        }
+        return false;
     }
 }
