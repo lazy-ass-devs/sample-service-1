@@ -28,10 +28,10 @@ Run the event listener
 ```
 php artisan event:listen
 ```
-![Event Listen](samples/1.png)
+![Event Listen](samples/1.JPG)
 
 After that... make sure to send the [sample-service-2](https://github.com/lazy-ass-devs/sample-service-2) project and see the changes
-![Event Listen2](samples/2.png)
+![Event Listen2](samples/2.JPG)
 
 ## How to Laravel Way
 - Create a artisan command and make it listen to incoming RabbitMQ queues https://laravel.com/docs/5.8/artisan#writing-commands
